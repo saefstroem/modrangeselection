@@ -1,4 +1,4 @@
-# The ModRange Selection Algorithm
+# ModRange Selection Algorithm
 
 ## Foreword
 
