@@ -25,7 +25,7 @@ Given a set of continuous numbers of size $n$, devise an algorithm to generate u
 - **Uniqueness**: Each generated value is unique and not repeated.
 - **Randomness**: Values are generated in a manner that is unpredictable (or dependent on entropy).
 - **Efficiency**: Both generation and update operations are performed in constant time `O(1)`.
-- **Tracking**: The algorithm maintains a record of used and available IDs.
+- **Tracking**: The algorithm maintains a record of used and available values.
 - **Entropy Usage**: The algorithm uses external entropy for selection.
 
 ## Data Structures
@@ -247,69 +247,64 @@ All primary operations execute in constant time `O(1)` :
 - **Value Generation**: Uses modulo and arithmetic operations.
 - **Range Updates**: Involves at most constant-time modifications to the ranges list.
 - **Range Removal**: By using swap removal (`swap_remove` function), we ensure that removing a range from the list is done in `O(1)` time, avoiding the linear time complexity of shifting elements.
-
-### Space Complexity Analysis
+## Space Complexity Analysis
 
 ### Definitions
-
-- **$n$**: Total number of elements in the initial range `[0, n)`.
-- **$s$**: Number of selected (used) values.
-- **$R$**: Number of ranges currently in the `ranges` list.
+- **![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7Dn)**: Total number of elements in the initial range ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7D%5B0%2Cn%29)
+- **![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7Ds)**: Number of selected (used) values
+- **![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DR)**: Number of ranges currently in the ranges list
+- **![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DV_R)**: Sum of all values in all ranges (total unselected values)
 
 ### Understanding the Maximum Number of Ranges
 
 1. **Initial State**:
    - We start with a single range representing all available values:
+   ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DR%3D1%2C%5Cquad%5Ctext%7Bvalues%7D%3D%5B(0%2Cn)%5D%2C%5Cquad%20V_R%3Dn)
 
-     ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}&space;R=1&plus;s&space;R=1,\quad\text{ranges}=[(0,n)])
-
-2. **Range Updates and Splitting**:
-   - Each time we select an ID:
-     - If the selected ID is at the start or end of a range, we adjust the range without increasing the number of ranges.
-     - If the selected ID is in the middle of a range, we split the range into two, **increasing** the number of ranges by **1**.
-   - Therefore, the maximum increase in the number of ranges per selection is **1**.
+2. **Key Insights**:
+   - Each range must contain at least one unselected value
+   - Selecting a value from the middle of a range splits it into two ranges
+   - Each split operation:
+     * Consumes one value (increasing ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7Ds) by 1)
+     * Creates one new range (increasing ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DR) by 1)
+     * Decreases ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DV_R) by 1
 
 3. **Maximum Number of Ranges**:
-   - To maximize the number of ranges, we need to split ranges as often as possible.
-   - The maximum possible number of splits occurs when every selection results in a split.
-   - Starting from a single range, after **s** selections that all cause splits, the number of ranges is:
-     ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}&space;R=1&plus;s&space;)
-   - However, since a range must contain at least one unselected ID, and each split consumes one selected ID, the **total number of IDs** satisfies:
+   - The fundamental constraint at any point is:
+   ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7Dn%3Ds%2BV_R)
+   
+   - To maximize ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DR):
+     * Each range should contain exactly one unselected value
+     * All selections should be made in the middle of ranges
+   
+   - When maximizing ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DR) through splits:
+     * Each range contains exactly one value, so:
+     ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DV_R%3DR)
+     * Each split increases both ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7Ds) and ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DR) by ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7D1), so:
+     ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DR%3D1%2Bs)
+   
+   - Substituting ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DV_R%3DR) and ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DR%3D1%2Bs) into ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7Dn%3Ds%2BV_R):
+   ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7Dn%3Ds%2B(1%2Bs)%3D1%2B2s)
+   
+   - Solving for ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7Ds):
+   ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7Ds%3D%5Cfrac%7Bn-1%7D%7B2%7D)
+   
+   - Therefore:
+   ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DR%3D1%2Bs%3D1%2B%5Cfrac%7Bn-1%7D%7B2%7D%3D%5Cfrac%7Bn%2B1%7D%7B2%7D)
 
-        ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}&space;n\geq\text{(number&space;of&space;unselected&space;IDs)}&plus;\text{(number&space;of&space;selected&space;IDs)}=R&plus;s)
-     
-     But from the previous equation, ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}&space;R=1&plus;s&space;), so:
-     
-        ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}n\geq(1&plus;s)&plus;s=1&plus;2s)
-     
-     Solving for $s$:
-         
-        ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}s\leq\frac{n-1}{2})
-     
-     Therefore, the maximum number of ranges $R$ is:
-     
-        ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}&space;R=1&plus;s\leq&space;1&plus;\frac{n-1}{2}=\frac{n&plus;1}{2})
+### Proof of Optimality
 
+This bound is tight because:
+1. Each range must contain at least one unselected value
+2. ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DV_R%5Cgeq%20R) (since each range must contain at least one value)
+3. To maximize ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DR) through splits:
+   - Each range must contain exactly one value (so ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DV_R%3DR))
+   - Each split must consume one value and create one new range
+4. Any other strategy would either:
+   - Violate ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DV_R%5Cgeq%20R), or
+   - Result in fewer ranges
 
-   - **Conclusion**: The maximum number of ranges $R$ is at most ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}\lceil&space;n/2\rceil&space;).
-
-### Space Complexity Calculation
-
-- **Space Used per Range**:
-  - Each range stores two integers: `(start, size)`.
-  - The space per range is constant, `O(1)`.
-
-- **Total Space Complexity**:
-  - Maximum number of ranges is: ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}R\leq\lceil&space;n/2\rceil&space;).
-  - Therefore, total space is:
-
-    ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}O(R)=O\left(\frac{n}{2}\right)=O(n))
-
-### Addressing the Storage Complexity Concerns
-
-  - The storage complexity is calculated based on the data structures actively maintained by the algorithm.
-  - Since we only store the ranges, and the maximum number of ranges is `O(n)`, the storage complexity remains `O(n)`.
-
+Therefore, ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DR%5Cleq%20%5Clceil%5Cfrac%7Bn%2B1%7D%7B2%7D%5Crceil), giving us a space complexity of ![equation](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D%5Cbg%7Bwhite%7DO(n)).
 
 ## Potential Considerations
 
