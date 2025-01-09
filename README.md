@@ -82,12 +82,12 @@ function generate_value(entropy, ranges):
 Adjust the ranges to remove the generated value while maintaining the invariants.
 
 ```plaintext
-function update_ranges(ranges, range_index, value_id):
+function update_ranges(ranges, range_index, value):
     (start, size) = ranges[range_index]
-    value_offset = value_id - start
+    value_offset = value - start
 
     if value_offset == 0:
-        # Value ID is at the start of the range
+        # Value is at the start of the range
         if size == 1:
             # The range is now empty; remove it using swap removal
             swap_remove(ranges, range_index)
@@ -95,12 +95,12 @@ function update_ranges(ranges, range_index, value_id):
             # Shrink the range from the start
             ranges[range_index] = (start + 1, size - 1)
     elif value_offset == size - 1:
-        # Value ID is at the end of the range
+        # Value is at the end of the range
         ranges[range_index] = (start, size - 1)
     else:
-        # Value ID is in the middle; split the range
+        # Value is in the middle; split the range
         left_size = value_offset
-        right_start = value_id + 1
+        right_start = value + 1
         right_size = size - value_offset - 1
         ranges[range_index] = (start, left_size)
         ranges.append((right_start, right_size))
