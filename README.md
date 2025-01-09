@@ -308,7 +308,7 @@ All primary operations execute in constant time `O(1)` :
 ### Addressing the Storage Complexity Concerns
 
   - The storage complexity is calculated based on the data structures actively maintained by the algorithm.
-  - Since we only store the ranges, and the maximum number of ranges is $ O(n) $, the storage complexity remains $ O(n) $.
+  - Since we only store the ranges, and the maximum number of ranges is `O(n)`, the storage complexity remains `O(n)`.
 
 
 ## Potential Considerations
