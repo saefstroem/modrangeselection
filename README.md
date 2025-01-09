@@ -221,14 +221,14 @@ The ModRange Selection algorithm could potentially be a more efficient choice fo
 
 ### Uniqueness
 
-- **Invariant Maintenance**: The update operations ensure that once a token ID is generated, it is removed from the available ranges.
-- **Range Integrity**: Ranges always represent unselected token IDs, and any selected ID is excluded from future selections.
-- **Conclusion**: No token ID can be generated more than once.
+- **Invariant Maintenance**: The update operations ensure that once a value is generated, it is removed from the available ranges.
+- **Range Integrity**: Ranges always represent unselected values, and any selected ID is excluded from future selections.
+- **Conclusion**: No value can be generated more than once.
 
 ### Randomness and Unpredictability
 
-- **Random Selection**: Both the range and the token ID within the range are selected based on entropy.
-- **Unpredictability**: Without knowledge of the internal state (i.e., current ranges and entropy source), predicting the next token ID is infeasible.
+- **Random Selection**: Both the range and the value within the range are selected based on entropy.
+- **Unpredictability**: Without knowledge of the internal state (i.e., current ranges and entropy source), predicting the next value is infeasible.
 - **Deterministic Entropy**: Even with a deterministic entropy source, the internal state changes with each operation, enhancing unpredictability to external observers.
 
 ### Maintenance of Invariants
@@ -244,7 +244,7 @@ The ModRange Selection algorithm could potentially be a more efficient choice fo
 All primary operations execute in constant time $ O(1) $ :
 
 - **Range Selection**: Calculated using a modulo operation on the entropy value.
-- **Token ID Generation**: Uses modulo and addition operations.
+- **Value Generation**: Uses modulo and arithmetic operations.
 - **Range Updates**: Involves at most constant-time modifications to the ranges list.
 - **Range Removal**: By using swap removal (`swap_remove` function), we ensure that removing a range from the list is done in $ O(1) $ time, avoiding the linear time complexity of shifting elements.
 
