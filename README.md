@@ -1,14 +1,12 @@
 # The ModRange Selection Algorithm
 
-**Author**: Alexander Säfström
-
 ## Foreword
 
 This algorithm is still being reviewed, therefore any feedback is appreciated. Some calculations and proofs might still need additional verification. 
 
 ## Abstract
 
-The ModRange Selection Algorithm is a new method for generating unique, random values from a range continuous range of numbers. Its use case applies to when you want to select some element from a list of elements that can be indexed in a continuous range. It maintains **constant `O(1)` time complexity** with **`O(n/2)` storage complexity** for **all operations** and optimizes space usage by preventing unnecessary range fragmentation, an improvement to many existing established methodologies. This document presents the algorithm in detail, including data structures, operational procedures, correctness proof, and complexity analysis, as well as illustration through pseudocode.
+The ModRange Selection Algorithm is a new algorithm for generating unique, random values from a range continuous range of numbers. Its use case applies to when you want to select some element from a list of elements that can be indexed in a continuous range. It maintains **constant `O(1)` time complexity** with **`O(n/2)` storage complexity** for **all operations** and optimizes space usage by preventing unnecessary range fragmentation, an improvement to many existing established methodologies. This document presents the algorithm in detail, including data structures, operational procedures, correctness proof, and complexity analysis, as well as illustration through pseudocode.
 
 The repository contains a Python implementation with benchmarks.
 
