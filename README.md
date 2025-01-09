@@ -20,7 +20,7 @@ The ModRange Selection Algorithm addresses these challenges by maintaining a dyn
 
 ## Problem Statement
 
-Given a set of continuous numbers of size $ n $, devise an algorithm to generate unique random values within the range `[0, n)` such that:
+Given a set of continuous numbers of size $n$, devise an algorithm to generate unique random values within the range `[0, n)` such that:
 
 - **Uniqueness**: Each generated value is unique and not repeated.
 - **Randomness**: Values are generated in a manner that is unpredictable (or dependent on entropy).
@@ -184,7 +184,7 @@ Several algorithms address the problem of generating unique random identifiers f
 
 2. **Reservoir Sampling**:
 
-   - **Description**: Used for sampling $ k $ elements from a large or unknown-size dataset. Each incoming element has a decreasing probability of being selected as the reservoir fills.
+   - **Description**: Used for sampling $k$ elements from a large or unknown-size dataset. Each incoming element has a decreasing probability of being selected as the reservoir fills.
    - **Time Complexity**: `O(n)` for $n$ elements.
    - **Comparison**:
      - **Similarities**: Generates random samples without replacement.
@@ -206,7 +206,7 @@ The ModRange Selection Algorithm distinguishes itself through several key featur
 
 
    - **Space Efficiency**: Maintains ranges of available values, optimizing storage by avoiding the need to track each used value.
-   - **Scalability**: Scales well with large $ n $, as space complexity is **proportional to the number of ranges** rather than the number of elements.
+   - **Scalability**: Scales well with large $n$, as space complexity is **proportional to the number of ranges** rather than the number of elements.
 
 
    - **Deterministic Compatibility**: Capable of functioning correctly with deterministic entropy sources, enhancing flexibility in environments where true randomness is constrained.
@@ -282,16 +282,16 @@ All primary operations execute in constant time `O(1)` :
      
         ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}n\geq(1&plus;s)&plus;s=1&plus;2s)
      
-     Solving for $ s $:
+     Solving for $s$:
          
         ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}s\leq\frac{n-1}{2})
      
-     Therefore, the maximum number of ranges $ R $ is:
+     Therefore, the maximum number of ranges $R$ is:
      
         ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}&space;R=1&plus;s\leq&space;1&plus;\frac{n-1}{2}=\frac{n&plus;1}{2})
 
 
-   - **Conclusion**: The maximum number of ranges $ R $ is at most ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}\lceil&space;n/2\rceil&space;).
+   - **Conclusion**: The maximum number of ranges $R$ is at most ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}\lceil&space;n/2\rceil&space;).
 
 ### Space Complexity Calculation
 
