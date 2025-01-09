@@ -8,7 +8,7 @@ This algorithm is still being reviewed, therefore any feedback is appreciated. S
 
 ## Abstract
 
-The ModRange Selection Algorithm is a new method for generating unique, random values from a range continuous range of numbers. Its use case applies to when you want to select some element from a list of elements that can be indexed in a continuous range. It maintains **constant $ O(1) $ time complexity** with **$O(n/2)$ storage complexity** for **all operations** and optimizes space usage by preventing unnecessary range fragmentation, an improvement to many existing established methodologies. This document presents the algorithm in detail, including data structures, operational procedures, correctness proof, and complexity analysis, as well as illustration through pseudocode.
+The ModRange Selection Algorithm is a new method for generating unique, random values from a range continuous range of numbers. Its use case applies to when you want to select some element from a list of elements that can be indexed in a continuous range. It maintains **constant `O(1)` time complexity** with **`O(n/2)` storage complexity** for **all operations** and optimizes space usage by preventing unnecessary range fragmentation, an improvement to many existing established methodologies. This document presents the algorithm in detail, including data structures, operational procedures, correctness proof, and complexity analysis, as well as illustration through pseudocode.
 
 The repository contains a Python implementation with benchmarks.
 
@@ -24,7 +24,7 @@ Given a set of continuous numbers of size $ n $, devise an algorithm to generate
 
 - **Uniqueness**: Each generated value is unique and not repeated.
 - **Randomness**: Values are generated in a manner that is unpredictable (or dependent on entropy).
-- **Efficiency**: Both generation and update operations are performed in constant time $ O(1) $.
+- **Efficiency**: Both generation and update operations are performed in constant time `O(1)`.
 - **Tracking**: The algorithm maintains a record of used and available IDs.
 - **Entropy Usage**: The algorithm uses external entropy for selection.
 
@@ -106,7 +106,7 @@ function update_ranges(ranges, range_index, value_id):
         ranges.append((right_start, right_size))
 ```
 
-**Note**: To maintain $O(1)$ time complexity during removals, the `swap_remove` function is used when removing a range from the list.
+**Note**: To maintain `O(1)` time complexity during removals, the `swap_remove` function is used when removing a range from the list.
 
 ```plaintext
 function swap_remove(ranges, index):
@@ -177,22 +177,22 @@ Several algorithms address the problem of generating unique random identifiers f
 1. **Fisher-Yates Shuffle Algorithm**:
 
    - **Description**: An algorithm to generate a random permutation of a finite set (shuffling an array). It works by swapping each element with a randomly selected element from the unshuffled portion.
-   - **Time Complexity**: $O(n)$ for shuffling the entire array.
+   - **Time Complexity**: `O(n)` for shuffling the entire array.
    - **Comparison**:
      - **Similarities**: Ensures unique selection without repeats.
-     - **Differences**: The full shuffle requires $O(n)$ time upfront, whereas ModRange achieves $O(1)$ time per selection without pre-processing.
+     - **Differences**: The full shuffle requires `O(n)` time upfront, whereas ModRange achieves `O(1)` time per selection without pre-processing.
 
 2. **Reservoir Sampling**:
 
    - **Description**: Used for sampling $ k $ elements from a large or unknown-size dataset. Each incoming element has a decreasing probability of being selected as the reservoir fills.
-   - **Time Complexity**: $O(n)$ for $n$ elements.
+   - **Time Complexity**: `O(n)` for $n$ elements.
    - **Comparison**:
      - **Similarities**: Generates random samples without replacement.
-     - **Differences**: Not efficient for single selection in $O(1)$ time and requires knowledge of total elements or passes through the dataset.
+     - **Differences**: Not efficient for single selection in `O(1)` time and requires knowledge of total elements or passes through the dataset.
 
 3. **Alias Method for Sampling Discrete Distributions**:
 
-   - **Description**: Allows sampling from a discrete distribution in $O(1)$ time after $O(n)$ or $O(nlogn)$ preprocessing.
+   - **Description**: Allows sampling from a discrete distribution in `O(1)` time after `O(n)` or $O(nlogn)$ preprocessing.
    - **Comparison**:
      - **Similarities**: Aims for constant-time sampling.
      - **Differences**: ModRange does not require preprocessing and adapts dynamically as elements are selected.
@@ -202,7 +202,7 @@ Several algorithms address the problem of generating unique random identifiers f
 The ModRange Selection Algorithm distinguishes itself through several key features:
 
 
-   - **Efficiency**: Achieves $ O(1) $ time complexity for both selection and update operations without a preprocessing requirement.
+   - **Efficiency**: Achieves `O(1)` time complexity for both selection and update operations without a preprocessing requirement.
 
 
    - **Space Efficiency**: Maintains ranges of available values, optimizing storage by avoiding the need to track each used value.
@@ -241,29 +241,27 @@ The ModRange Selection algorithm could potentially be a more efficient choice fo
 
 ### Time Complexity
 
-All primary operations execute in constant time $ O(1) $ :
+All primary operations execute in constant time `O(1)` :
 
 - **Range Selection**: Calculated using a modulo operation on the entropy value.
 - **Value Generation**: Uses modulo and arithmetic operations.
 - **Range Updates**: Involves at most constant-time modifications to the ranges list.
-- **Range Removal**: By using swap removal (`swap_remove` function), we ensure that removing a range from the list is done in $ O(1) $ time, avoiding the linear time complexity of shifting elements.
+- **Range Removal**: By using swap removal (`swap_remove` function), we ensure that removing a range from the list is done in `O(1)` time, avoiding the linear time complexity of shifting elements.
 
 ### Space Complexity Analysis
 
 ### Definitions
 
-- **$ n $**: Total number of elements in the initial range `[0, n)`.
-- **$ s $**: Number of selected (used) values.
-- **$ R $**: Number of ranges currently in the `ranges` list.
+- **$n$**: Total number of elements in the initial range `[0, n)`.
+- **$s$**: Number of selected (used) values.
+- **$R$**: Number of ranges currently in the `ranges` list.
 
 ### Understanding the Maximum Number of Ranges
 
 1. **Initial State**:
    - We start with a single range representing all available values:
 
-     $
-     R = 1, \quad \text{ranges} = [(0, n)]
-     $
+     ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}&space;R=1&plus;s&space;R=1,\quad\text{ranges}=[(0,n)])
 
 2. **Range Updates and Splitting**:
    - Each time we select an ID:
@@ -275,43 +273,37 @@ All primary operations execute in constant time $ O(1) $ :
    - To maximize the number of ranges, we need to split ranges as often as possible.
    - The maximum possible number of splits occurs when every selection results in a split.
    - Starting from a single range, after **s** selections that all cause splits, the number of ranges is:
-     $
-     R = 1 + s
-     $
+     ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}&space;R=1&plus;s&space;)
    - However, since a range must contain at least one unselected ID, and each split consumes one selected ID, the **total number of IDs** satisfies:
 
-     $
-     n \geq \text{(number of unselected IDs)} + \text{(number of selected IDs)} = R + s
-     $
+        ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}&space;n\geq\text{(number&space;of&space;unselected&space;IDs)}&plus;\text{(number&space;of&space;selected&space;IDs)}=R&plus;s)
      
-     But from the previous equation, $ R = 1 + s $, so:
-     $
-     n \geq (1 + s) + s = 1 + 2s
-     $
+     But from the previous equation, ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}&space;R=1&plus;s&space;), so:
+     
+        ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}n\geq(1&plus;s)&plus;s=1&plus;2s)
      
      Solving for $ s $:
-     $
-     s \leq \frac{n - 1}{2}
-     $
+         
+        ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}s\leq\frac{n-1}{2})
      
      Therefore, the maximum number of ranges $ R $ is:
-     $
-     R = 1 + s \leq 1 + \frac{n - 1}{2} = \frac{n + 1}{2}
-     $
-   - **Conclusion**: The maximum number of ranges $ R $ is at most $ \lceil n / 2 \rceil $.
+     
+        ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}&space;R=1&plus;s\leq&space;1&plus;\frac{n-1}{2}=\frac{n&plus;1}{2})
+
+
+   - **Conclusion**: The maximum number of ranges $ R $ is at most ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}\lceil&space;n/2\rceil&space;).
 
 ### Space Complexity Calculation
 
 - **Space Used per Range**:
   - Each range stores two integers: `(start, size)`.
-  - The space per range is constant, $ O(1) $.
+  - The space per range is constant, `O(1)`.
 
 - **Total Space Complexity**:
-  - Maximum number of ranges is $ R \leq \lceil n / 2 \rceil $.
+  - Maximum number of ranges is: ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}R\leq\lceil&space;n/2\rceil&space;).
   - Therefore, total space is:
-    $
-    O(R) = O\left( \frac{n}{2} \right) = O(n)
-    $
+
+    ![equation](https://latex.codecogs.com/png.image?\dpi{110}\bg{white}O(R)=O\left(\frac{n}{2}\right)=O(n))
 
 ### Addressing the Storage Complexity Concerns
 
@@ -338,10 +330,10 @@ All primary operations execute in constant time $ O(1) $ :
 
 ### Implementation Notes
 
-- **Swap Removal for Efficiency**: To maintain $ O(1) $ time complexity during range removals, the `swap_remove` method should be used. This avoids the linear time complexity associated with removing elements from arbitrary positions in a list.
+- **Swap Removal for Efficiency**: To maintain `O(1)` time complexity during range removals, the `swap_remove` method should be used. This avoids the linear time complexity associated with removing elements from arbitrary positions in a list.
 
 ## Conclusion
 
-The ModRange Selection Algorithm is new and novel solution for when you want to generate unique random values from a known set of continuous numbers. It is useful in situations where resources are scarce and efficiency is critical such as high-performance computing and embedded systems. This is thanks to the time complexity of $ O(1) $. In addition to its compatibility of functioning with external entropy makes it an interesting alternative to established methods.
+The ModRange Selection Algorithm is new and novel solution for when you want to generate unique random values from a known set of continuous numbers. It is useful in situations where resources are scarce and efficiency is critical such as high-performance computing and embedded systems. This is thanks to the time complexity of `O(1)`. In addition to its compatibility of functioning with external entropy makes it an interesting alternative to established methods.
 
 
