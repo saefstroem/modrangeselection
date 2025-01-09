@@ -1,5 +1,5 @@
 # The ModRange Selection Algorithm
-
+**Author**: Alexander Säfström
 ## Abstract
 
 The ModRange Selection Algorithm offers an efficient method for generating unique, random token IDs from a fixed range. It maintains constant \( O(1) \) time complexity for all operations and optimizes space usage by preventing unnecessary range fragmentation. This document presents the algorithm in detail, including data structures, operational procedures, correctness proof, and complexity analysis, all illustrated through pseudocode.
